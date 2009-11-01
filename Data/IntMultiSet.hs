@@ -292,13 +292,30 @@ isSubsetOf (MS m1) (MS m2) = Map.isSubmapOfBy (<=) m1 m2
 findMin :: IntMultiSet -> Key
 -- TODO: IntMap has a different findMin than Map
 --findMin = fst . Map.findMin . unMS
-findMin = Map.findMin . unMS
+--findMin = Map.findMin . unMS
 
 -- | /O(log n)/. The maximal element of a multiset.
 findMax :: IntMultiSet -> Key
 -- TODO: IntMap has a different findMin than Map
 --findMax = fst . Map.findMax . unMS
-findMax = Map.findMax . unMS
+--findMax = Map.findMax . unMS
+
+-- Note: the documentation for IntMap.findMin/Max is incorrect
+-- they return the VALUE at the minimal/maximal key
+
+-- Here is a workarounds of IntMap's deficiencies/inconsistencies.
+
+-- | /O(log n)/. The minimal key of an IntMap.
+minKey :: IntMap a -> Int
+minKey = maybe (error "IntMultiSet.maxKey: no elements") (fst . fst) . Map.minViewWithKey
+
+-- | /O(log n)/. The maximal key of an IntMap.
+maxKey :: IntMap a -> Int
+maxKey = maybe (error "maxKey: empty IntMap") (fst.fst) . Map.maxViewWithKey
+
+findMin = minKey . unMS
+findMax = maxKey . unMS
+
 
 -- | /O(log n)/. Delete the minimal element.
 deleteMin :: IntMultiSet -> IntMultiSet
