@@ -360,8 +360,8 @@ unions :: Ord a => [MultiSet a] -> MultiSet a
 unions ts
   = foldlStrict union empty ts
 
--- | /O(n+m)/. The union of two multisets, preferring the first multiset when
--- equal elements are encountered.
+-- | /O(n+m)/. The union of two multisets. The union adds the occurences together.
+-- 
 -- The implementation uses the efficient /hedge-union/ algorithm.
 -- Hedge-union is more efficient on (bigset `union` smallset).
 union :: Ord a => MultiSet a -> MultiSet a -> MultiSet a
