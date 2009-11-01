@@ -12,4 +12,5 @@ build-type:       Simple
 include-dirs:     include
 extensions:       CPP
 exposed-modules:  Data.MultiSet, Data.IntMultiSet
+extra-source-files: include/Typeable.h
 ghc-options:      -Wall
