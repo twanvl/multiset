@@ -54,6 +54,7 @@ module Data.IntMultiSet  (
 
             -- * Combine
             , union, unions
+            , maxUnion
             , difference
             , intersection
 
@@ -386,12 +387,21 @@ unions :: [IntMultiSet] -> IntMultiSet
 unions ts
   = foldlStrict union empty ts
 
--- | /O(n+m)/. The union of two multisets, preferring the first multiset when
--- equal elements are encountered.
+-- | /O(n+m)/. The union of two multisets. The union adds the occurences together.
+--
 -- The implementation uses the efficient /hedge-union/ algorithm.
 -- Hedge-union is more efficient on (bigset `union` smallset).
 union :: IntMultiSet -> IntMultiSet -> IntMultiSet
 union (MS m1) (MS m2) = MS $ Map.unionWith (+) m1 m2
+
+-- | /O(n+m)/. The union of two multisets.
+-- The number of occurences of each element in the union is
+-- the maximum of the number of occurences in the arguments (instead of the sum).
+--
+-- The implementation uses the efficient /hedge-union/ algorithm.
+-- Hedge-union is more efficient on (bigset `union` smallset).
+maxUnion :: IntMultiSet -> IntMultiSet -> IntMultiSet
+maxUnion (MS m1) (MS m2) = MS $ Map.unionWith max m1 m2
 
 -- | /O(n+m)/. Difference of two multisets. 
 -- The implementation uses an efficient /hedge/ algorithm comparable with /hedge-union/.
@@ -399,14 +409,6 @@ difference :: IntMultiSet -> IntMultiSet -> IntMultiSet
 difference (MS m1) (MS m2) = MS $ Map.differenceWith (flip deleteN) m1 m2
 
 -- | /O(n+m)/. The intersection of two multisets.
--- Elements of the result come from the first multiset, so for example
---
--- > import qualified Data.MultiSet as MS
--- > data AB = A | B deriving Show
--- > instance Ord AB where compare _ _ = EQ
--- > instance Eq AB where _ == _ = True
--- > main = print (MS.singleton A `MS.intersection` MS.singleton B,
--- >               MS.singleton B `MS.intersection` MS.singleton A)
 --
 -- prints @(fromList [A],fromList [B])@.
 intersection :: IntMultiSet -> IntMultiSet -> IntMultiSet

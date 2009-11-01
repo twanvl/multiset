@@ -59,6 +59,7 @@ module Data.MultiSet  (
 
             -- * Combine
             , union, unions
+            , maxUnion
             , difference
             , intersection
 
@@ -366,6 +367,15 @@ unions ts
 -- Hedge-union is more efficient on (bigset `union` smallset).
 union :: Ord a => MultiSet a -> MultiSet a -> MultiSet a
 union (MS m1) (MS m2) = MS $ Map.unionWith (+) m1 m2
+
+-- | /O(n+m)/. The union of two multisets.
+-- The number of occurences of each element in the union is
+-- the maximum of the number of occurences in the arguments (instead of the sum).
+--
+-- The implementation uses the efficient /hedge-union/ algorithm.
+-- Hedge-union is more efficient on (bigset `union` smallset).
+maxUnion :: Ord a => MultiSet a -> MultiSet a -> MultiSet a
+maxUnion (MS m1) (MS m2) = MS $ Map.unionWith max m1 m2
 
 -- | /O(n+m)/. Difference of two multisets. 
 -- The implementation uses an efficient /hedge/ algorithm comparable with /hedge-union/.
