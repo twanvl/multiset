@@ -7,10 +7,22 @@ synopsis:         The Data.MultiSet container type
 description:      A variation of Data.Set. Multisets, sometimes also called bags, can contain multiple copies of the same key.
 license:          BSD3
 license-file:     LICENSE
-build-depends:    base, containers
 build-type:       Simple
-include-dirs:     include
-extensions:       CPP
-exposed-modules:  Data.MultiSet, Data.IntMultiSet
+Cabal-version:    >= 1.2
 extra-source-files: include/Typeable.h
-ghc-options:      -Wall
+
+Flag Base3
+  Description: Use Version 3 of Base
+  Default: False 
+
+Library
+  exposed-modules:    Data.MultiSet, Data.IntMultiSet
+
+  include-dirs:       include
+  extensions:         CPP
+  ghc-options:        -Wall
+  build-depends:      containers
+  if flag(Base3)
+    build-depends:    base == 3
+  else
+    build-depends:    base > 3 && < 5, syb
