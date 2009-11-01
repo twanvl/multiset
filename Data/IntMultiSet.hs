@@ -307,11 +307,11 @@ findMax :: IntMultiSet -> Key
 
 -- | /O(log n)/. The minimal key of an IntMap.
 minKey :: IntMap a -> Int
-minKey = maybe (error "IntMultiSet.maxKey: no elements") (fst . fst) . Map.minViewWithKey
+minKey = maybe (error "IntMultiSet.findMin: empty multiset") (fst . fst) . Map.minViewWithKey
 
 -- | /O(log n)/. The maximal key of an IntMap.
 maxKey :: IntMap a -> Int
-maxKey = maybe (error "maxKey: empty IntMap") (fst.fst) . Map.maxViewWithKey
+maxKey = maybe (error "IntMultiSet.findMax: empty multiset") (fst . fst) . Map.maxViewWithKey
 
 findMin = minKey . unMS
 findMax = maxKey . unMS
