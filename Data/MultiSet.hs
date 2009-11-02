@@ -149,10 +149,10 @@ import List (nub,sort)
 import qualified List
 -}
 
+import Data.Typeable
 #if __GLASGOW_HASKELL__
 import Text.Read
-import Data.Generics.Basics
-import Data.Generics.Instances ()
+import Data.Data (Data(..), mkNorepType)
 #endif
 
 {--------------------------------------------------------------------

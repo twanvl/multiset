@@ -11,18 +11,10 @@ build-type:       Simple
 Cabal-version:    >= 1.2
 extra-source-files: include/Typeable.h
 
-Flag Base3
-  Description: Use Version 3 of Base
-  Default: False 
-
 Library
   exposed-modules:    Data.MultiSet, Data.IntMultiSet
 
   include-dirs:       include
   extensions:         CPP
   ghc-options:        -Wall
-  build-depends:      containers
-  if flag(Base3)
-    build-depends:    base == 3
-  else
-    build-depends:    base > 3 && < 5, syb
+  build-depends:      containers,base
