@@ -17,4 +17,4 @@ Library
   include-dirs:       include
   extensions:         CPP
   ghc-options:        -Wall
-  build-depends:      containers,base
+  build-depends:      containers, base >= 2 && < 5
