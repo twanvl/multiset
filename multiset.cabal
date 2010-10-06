@@ -1,10 +1,12 @@
 name:             multiset
-version:          0.2
+version:          0.2.1
 author:           Twan van Laarhoven
 maintainer:       twanvl@gmail.com
 category:         Data Structures
 synopsis:         The Data.MultiSet container type
-description:      A variation of Data.Set. Multisets, sometimes also called bags, can contain multiple copies of the same key.
+description:
+    A variation of Data.Set.
+    Multisets, sometimes also called bags, can contain multiple copies of the same key.
 license:          BSD3
 license-file:     LICENSE
 build-type:       Simple
@@ -17,4 +19,4 @@ Library
   include-dirs:       include
   extensions:         CPP
   ghc-options:        -Wall
-  build-depends:      containers, base >= 2 && < 5
+  build-depends:      containers, base >= 4 && < 5
