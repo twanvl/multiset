@@ -147,7 +147,7 @@ import qualified List
 import Data.Typeable
 #if __GLASGOW_HASKELL__
 import Text.Read
-import Data.Data (Data(..), mkNorepType)
+import Data.Data (Data(..), mkNoRepType)
 #endif
 
 {--------------------------------------------------------------------
@@ -191,7 +191,7 @@ instance Data IntMultiSet where
   gfoldl f z set = z fromList `f` (toList set)
   toConstr _     = error "toConstr"
   gunfold _ _    = error "gunfold"
-  dataTypeOf _   = mkNorepType "Data.IntMultiSet.IntMultiSet"
+  dataTypeOf _   = mkNoRepType "Data.IntMultiSet.IntMultiSet"
 
 #endif
 
