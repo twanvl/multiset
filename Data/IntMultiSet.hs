@@ -1,3 +1,7 @@
+{-# LANGUAGE CPP #-}
+#if __GLASGOW_HASKELL__
+{-# LANGUAGE DeriveDataTypeable, StandaloneDeriving #-}
+#endif
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.IntMultiSet
@@ -129,10 +133,10 @@ module Data.IntMultiSet  (
 import Prelude hiding (filter,foldr,null,map,concatMap)
 import Data.Monoid (Monoid(..))
 import Data.Typeable ()
-import Data.IntMap (IntMap)
+import Data.IntMap.Strict (IntMap)
 import Data.IntSet (IntSet)
 import Data.MultiSet (MultiSet)
-import qualified Data.IntMap as Map
+import qualified Data.IntMap.Strict as Map
 import qualified Data.IntSet as Set
 import qualified Data.List as List
 import qualified Data.MultiSet as MultiSet
@@ -320,31 +324,18 @@ findMax = maxKey . unMS
 
 -- | /O(log n)/. Delete the minimal element.
 deleteMin :: IntMultiSet -> IntMultiSet
--- TODO: IntMap has a different updateMin
---deleteMin = MS . Map.updateMin (deleteN 1) . unMS
-deleteMin (MS m) = case Map.minView m of
-                      Nothing     -> empty
-                      Just (1,m') -> MS m'
-                      Just (_,m') -> MS $ Map.updateMin pred m'
+deleteMin = MS . Map.updateMin (deleteN 1) . unMS
 
 -- | /O(log n)/. Delete the maximal element.
 deleteMax :: IntMultiSet -> IntMultiSet
---deleteMax = MS . Map.updateMax (deleteN 1) . unMS
-deleteMax (MS m) = case Map.maxView m of
-                      Nothing     -> empty
-                      Just (1,m') -> MS m'
-                      Just (_,m') -> MS $ Map.updateMax pred m'
+deleteMax = MS . Map.updateMax (deleteN 1) . unMS
 
 -- | /O(log n)/. Delete all occurences of the minimal element.
 deleteMinAll :: IntMultiSet -> IntMultiSet
--- TODO IntMap's deleteMin will error on empty maps!
-deleteMinAll m | null m = m
 deleteMinAll m = MS . Map.deleteMin . unMS $ m
 
 -- | /O(log n)/. Delete all occurences of the maximal element.
 deleteMaxAll :: IntMultiSet -> IntMultiSet
--- TODO IntMap's deleteMax will error on empty maps!
-deleteMaxAll m | null m = m
 deleteMaxAll m = MS . Map.deleteMax . unMS $ m
 
 -- | /O(log n)/. Delete and find the minimal element.
@@ -468,7 +459,7 @@ mapEither f = (\(ls,rs) -> (fromOccurList ls, fromOccurList rs)) . mapEither' . 
 
 -- | /O(n)/. Apply a function to each element, and take the union of the results
 concatMap :: (Key -> [Key]) -> IntMultiSet -> IntMultiSet
-concatMap f = fromOccurList . Map.foldWithKey mapF [] . unMS
+concatMap f = fromOccurList . Map.foldrWithKey mapF [] . unMS
   where mapF x occ rest = List.map (\y -> (y,occ)) (f x) ++ rest
 
 -- | /O(n)/. Apply a function to each element, and take the union of the results
@@ -498,13 +489,13 @@ fold f z s
 
 -- | /O(t)/. Post-order fold.
 foldr :: (Key -> b -> b) -> b -> IntMultiSet -> b
-foldr f z = Map.foldWithKey repF z . unMS
+foldr f z = Map.foldrWithKey repF z . unMS
  where repF a 1 b = f a b
        repF a n b = repF a (n - 1) (f a b)
 
 -- | /O(n)/. Fold over the elements of a multiset with their occurences.
 foldOccur :: (Key -> Occur -> b -> b) -> b -> IntMultiSet -> b
-foldOccur f z = Map.foldWithKey f z . unMS
+foldOccur f z = Map.foldrWithKey f z . unMS
 
 {--------------------------------------------------------------------
   List variations 

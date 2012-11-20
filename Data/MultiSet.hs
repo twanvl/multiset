@@ -1,3 +1,7 @@
+{-# LANGUAGE CPP #-}
+#if __GLASGOW_HASKELL__
+{-# LANGUAGE DeriveDataTypeable, StandaloneDeriving #-}
+#endif
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.MultiSet
@@ -136,9 +140,9 @@ import Prelude hiding (filter,foldr,null,map,concatMap)
 import Data.Monoid (Monoid(..))
 import Data.Typeable ()
 import qualified Data.Foldable as Foldable (Foldable(foldr))
-import Data.Map (Map)
+import Data.Map.Strict (Map)
 import Data.Set (Set)
-import qualified Data.Map as Map
+import qualified Data.Map.Strict as Map
 import qualified Data.Set as Set
 import qualified Data.List as List
 
@@ -248,7 +252,7 @@ singleton x = MS (Map.singleton x 1)
 
 -- | /O(log n)/. Insert an element in a multiset.
 insert :: Ord a => a -> MultiSet a -> MultiSet a
-insert x = MS . Map.insertWith' (+) x 1 . unMS
+insert x = MS . Map.insertWith (+) x 1 . unMS
 
 -- | /O(log n)/. Insert an element in a multiset a given number of times.
 --
@@ -257,7 +261,7 @@ insertMany :: Ord a => a -> Occur -> MultiSet a -> MultiSet a
 insertMany x n
  | n <  0    = MS . Map.update (deleteN (negate n)) x . unMS
  | n == 0    = id
- | otherwise = MS . Map.insertWith' (+) x n . unMS
+ | otherwise = MS . Map.insertWith (+) x n . unMS
 
 -- | /O(log n)/. Delete a single element from a multiset.
 delete :: Ord a => a -> MultiSet a -> MultiSet a
@@ -449,7 +453,7 @@ mapEither f = (\(ls,rs) -> (fromOccurList ls, fromOccurList rs)) . mapEither' . 
 
 -- | /O(n)/. Apply a function to each element, and take the union of the results
 concatMap :: (Ord a, Ord b) => (a -> [b]) -> MultiSet a -> MultiSet b
-concatMap f = fromOccurList . Map.foldWithKey mapF [] . unMS
+concatMap f = fromOccurList . Map.foldrWithKey mapF [] . unMS
   where mapF x occ rest = List.map (\y -> (y,occ)) (f x) ++ rest
 
 -- | /O(n)/. Apply a function to each element, and take the union of the results
@@ -479,13 +483,13 @@ fold f z s
 
 -- | /O(t)/. Post-order fold.
 foldr :: (a -> b -> b) -> b -> MultiSet a -> b
-foldr f z = Map.foldWithKey repF z . unMS
+foldr f z = Map.foldrWithKey repF z . unMS
  where repF a 1 b = f a b
        repF a n b = repF a (n - 1) (f a b)
 
 -- | /O(n)/. Fold over the elements of a multiset with their occurences.
 foldOccur :: (a -> Occur -> b -> b) -> b -> MultiSet a -> b
-foldOccur f z = Map.foldWithKey f z . unMS
+foldOccur f z = Map.foldrWithKey f z . unMS
 
 {--------------------------------------------------------------------
   List variations 
