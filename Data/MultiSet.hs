@@ -419,7 +419,7 @@ partition p = (\(x,y) -> (MS x, MS y)) . Map.partitionWithKey (\k _ -> p k) . un
 
 -- | /O(n*log n)/. 
 -- @'map' f s@ is the multiset obtained by applying @f@ to each element of @s@.
-map :: (Ord a, Ord b) => (a->b) -> MultiSet a -> MultiSet b
+map :: (Ord b) => (a->b) -> MultiSet a -> MultiSet b
 map f = MS . Map.mapKeysWith (+) f . unMS
 
 -- | /O(n)/. The 
@@ -435,7 +435,7 @@ mapMonotonic :: (a->b) -> MultiSet a -> MultiSet b
 mapMonotonic f = MS . Map.mapKeysMonotonic f . unMS
 
 -- | /O(n)/. Map and collect the 'Just' results.
-mapMaybe :: (Ord a, Ord b) => (a -> Maybe b) -> MultiSet a -> MultiSet b
+mapMaybe :: (Ord b) => (a -> Maybe b) -> MultiSet a -> MultiSet b
 mapMaybe f = fromOccurList . mapMaybe' . toOccurList
   where mapMaybe' [] = []
         mapMaybe' ((x,n):xs) = case f x of
@@ -443,7 +443,7 @@ mapMaybe f = fromOccurList . mapMaybe' . toOccurList
            Nothing ->          mapMaybe' xs
 
 -- | /O(n)/. Map and separate the 'Left' and 'Right' results.
-mapEither :: (Ord a, Ord b, Ord c) => (a -> Either b c) -> MultiSet a -> (MultiSet b, MultiSet c)
+mapEither :: (Ord b, Ord c) => (a -> Either b c) -> MultiSet a -> (MultiSet b, MultiSet c)
 mapEither f = (\(ls,rs) -> (fromOccurList ls, fromOccurList rs)) . mapEither' . toOccurList
   where mapEither' [] = ([],[])
         mapEither' ((x,n):xs) = case f x of
@@ -452,12 +452,12 @@ mapEither f = (\(ls,rs) -> (fromOccurList ls, fromOccurList rs)) . mapEither' . 
 
 
 -- | /O(n)/. Apply a function to each element, and take the union of the results
-concatMap :: (Ord a, Ord b) => (a -> [b]) -> MultiSet a -> MultiSet b
+concatMap :: (Ord b) => (a -> [b]) -> MultiSet a -> MultiSet b
 concatMap f = fromOccurList . Map.foldrWithKey mapF [] . unMS
   where mapF x occ rest = List.map (\y -> (y,occ)) (f x) ++ rest
 
 -- | /O(n)/. Apply a function to each element, and take the union of the results
-unionsMap :: (Ord a, Ord b) => (a -> MultiSet b) -> MultiSet a -> MultiSet b
+unionsMap :: (Ord b) => (a -> MultiSet b) -> MultiSet a -> MultiSet b
 unionsMap f = unions . List.map timesF . toOccurList
   where timesF (ms,1) = f ms
         timesF (ms,n) = MS . Map.map (*n) . unMS $ f ms
@@ -469,7 +469,7 @@ join = unions . List.map times . toOccurList
         times (ms,n) = MS . Map.map (*n) . unMS $ ms
 
 -- | /O(n)/. The monad bind operation, (>>=), for multisets.
-bind :: (Ord a, Ord b) => MultiSet a -> (a -> MultiSet b) -> MultiSet b
+bind :: (Ord b) => MultiSet a -> (a -> MultiSet b) -> MultiSet b
 bind = flip unionsMap
 
 {--------------------------------------------------------------------
