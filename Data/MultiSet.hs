@@ -342,19 +342,19 @@ deleteFindMax set = (findMax set, deleteMax set)
 
 -- | /O(log n)/. Retrieves the minimal element of the multiset,
 --   and the set with that element removed.
---   @fail@s (in the monad) when passed an empty multiset.
-minView :: Monad m => MultiSet a -> m (a, MultiSet a)
+--   Returns @Nothing@ when passed an empty multiset.
+minView :: MultiSet a -> Maybe (a, MultiSet a)
 minView x
-  | null x    = fail "MultiSet.minView: empty multiset"
-  | otherwise = return (deleteFindMin x)
+  | null x    = Nothing
+  | otherwise = Just (deleteFindMin x)
 
 -- | /O(log n)/. Retrieves the maximal element of the multiset,
 --   and the set with that element removed.
---   @fail@s (in the monad) when passed an empty multiset.
-maxView :: Monad m => MultiSet a -> m (a, MultiSet a)
+--   Returns @Nothing@ when passed an empty multiset.
+maxView :: MultiSet a -> Maybe (a, MultiSet a)
 maxView x
-  | null x    = fail "MultiSet.maxView: empty multiset"
-  | otherwise = return (deleteFindMin x)
+  | null x    = Nothing
+  | otherwise = Just (deleteFindMin x)
 
 {--------------------------------------------------------------------
   Union, Difference, Intersection
