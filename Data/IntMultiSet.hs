@@ -130,7 +130,11 @@ module Data.IntMultiSet  (
             , showTreeWith
             ) where
 
-import Prelude hiding (filter,foldr,null,map,concatMap)
+import Prelude hiding (filter,foldr,null,map,concatMap
+#if __GLASGOW_HASKELL__ >= 709
+  ,join
+#endif
+  )
 import Data.Monoid (Monoid(..))
 import Data.Typeable ()
 import Data.IntMap.Strict (IntMap)
