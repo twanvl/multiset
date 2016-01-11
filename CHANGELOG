@@ -1,0 +1,6 @@
+0.3.1: (2016-01-11)
+ * #4: Fix maxView to use deleteFindMax instead of deleteFindMin
+
+0.3.0: (2015-06-29)
+ * #3: Return Maybe instead of `fail`-ing in a monad 
+
