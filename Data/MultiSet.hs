@@ -347,6 +347,10 @@ deleteFindMax set = (findMax set, deleteMax set)
 -- | /O(log n)/. Retrieves the minimal element of the multiset,
 --   and the set with that element removed.
 --   Returns @Nothing@ when passed an empty multiset.
+--
+-- Examples:
+-- >>> minView $ fromList ['a', 'a', 'b', 'c']
+-- Just ('a',fromOccurList [('a',1),('b',1),('c',1)])
 minView :: MultiSet a -> Maybe (a, MultiSet a)
 minView x
   | null x    = Nothing
@@ -355,10 +359,14 @@ minView x
 -- | /O(log n)/. Retrieves the maximal element of the multiset,
 --   and the set with that element removed.
 --   Returns @Nothing@ when passed an empty multiset.
+--
+-- Examples:
+-- >>> maxView $ fromList ['a', 'a', 'b', 'c']
+-- Just ('c',fromOccurList [('a',2),('b',1)])
 maxView :: MultiSet a -> Maybe (a, MultiSet a)
 maxView x
   | null x    = Nothing
-  | otherwise = Just (deleteFindMin x)
+  | otherwise = Just (deleteFindMax x)
 
 {--------------------------------------------------------------------
   Union, Difference, Intersection
