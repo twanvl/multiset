@@ -1,3 +1,6 @@
+0.3.2: (2016-01-12)
+ * #7: Work around doctest issue of ambiguous modules
+
 0.3.1: (2016-01-11)
  * #4: Fix maxView to use deleteFindMax instead of deleteFindMin
 
