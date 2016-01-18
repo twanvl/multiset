@@ -283,7 +283,7 @@ deleteAll x = MS . Map.delete x . unMS
 
 deleteN :: Occur -> Occur -> Maybe Occur
 deleteN n m
-  | m <= n    = Nothing
+  | m == n    = Nothing
   | otherwise = Just (m - n)
 
 
@@ -556,17 +556,17 @@ toAscOccurList = Map.toAscList . unMS
 
 -- | /O(n*log n)/. Create a multiset from a list of element\/occurence pairs.
 fromOccurList :: Ord a => [(a,Occur)] -> MultiSet a 
-fromOccurList = MS . Map.fromListWith (+)
+fromOccurList = MS . Map.filter (/=0) . Map.fromListWith (+)
 
 -- | /O(n)/. Build a multiset from an ascending list of element\/occurence pairs in linear time.
 -- /The precondition (input list is ascending) is not checked./
 fromAscOccurList :: Eq a => [(a,Occur)] -> MultiSet a 
-fromAscOccurList = MS . Map.fromAscListWith (+)
+fromAscOccurList = MS . Map.filter (/=0) . Map.fromAscListWith (+)
 
 -- | /O(n)/. Build a multiset from an ascending list of elements\/occurence pairs where each elements appears only once.
 -- /The precondition (input list is strictly ascending) is not checked./
 fromDistinctAscOccurList :: [(a,Occur)] -> MultiSet a 
-fromDistinctAscOccurList = MS . Map.fromDistinctAscList
+fromDistinctAscOccurList = MS . Map.filter (/=0) . Map.fromDistinctAscList
 
 {--------------------------------------------------------------------
   Map
@@ -578,7 +578,7 @@ toMap = unMS
 
 -- | /O(n)/. Convert a 'Map' from elements to occurrences to a multiset.
 fromMap :: Ord a => Map a Occur -> MultiSet a
-fromMap = MS . Map.filter (>0)
+fromMap = MS . Map.filter (==0)
 
 -- | /O(1)/. Convert a 'Map' from elements to occurrences to a multiset.
 -- Assumes that the 'Map' contains only values larger than one.
