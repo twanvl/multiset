@@ -131,11 +131,13 @@ module Data.IntMultiSet  (
             ) where
 
 import Prelude hiding (filter,foldr,null,map,concatMap
-#if __GLASGOW_HASKELL__ >= 709
+#if __GLASGOW_HASKELL__ >= 709 && __GLASGOW_HASKELL__ < 710
   ,join
 #endif
   )
+#if __GLASGOW_HASKELL__ < 710
 import Data.Monoid (Monoid(..))
+#endif
 import Data.Typeable ()
 import Data.IntMap.Strict (IntMap)
 import Data.IntSet (IntSet)
