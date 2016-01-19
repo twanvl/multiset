@@ -363,6 +363,7 @@ deleteFindMax set = (findMax set, deleteMax set)
 -- Returns @Nothing@ when passed an empty multiset.
 --
 -- Examples:
+--
 -- >>> minView $ fromList [100, 100, 200, 300]
 -- Just (100,fromOccurList [(100,1),(200,1),(300,1)])
 minView :: IntMultiSet -> Maybe (Key, IntMultiSet)
@@ -374,6 +375,7 @@ minView x
 -- @fail@s (in the monad) when passed an empty multiset.
 --
 -- Examples:
+--
 -- >>> maxView $ fromList [100, 100, 200, 300]
 -- Just (300,fromOccurList [(100,2),(200,1)])
 maxView :: IntMultiSet -> Maybe (Key, IntMultiSet)
