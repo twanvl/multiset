@@ -136,20 +136,12 @@ module Data.MultiSet  (
             , valid
             ) where
 
-import Prelude hiding (filter,foldr,null,map,concatMap
-#if __GLASGOW_HASKELL__ >= 709 && __GLASGOW_HASKELL__ < 710
-  ,join
-#endif
-  )
+import Prelude hiding (filter,foldr,null,map,concatMap)
 #if __GLASGOW_HASKELL__ < 710
 import Data.Monoid (Monoid(..))
 #endif
 import Data.Typeable ()
-#if __GLASGOW_HASKELL__ >= 710
 import qualified Data.Foldable as Foldable
-#else
-import qualified Data.Foldable as Foldable (Foldable(foldr))
-#endif
 import Data.Map.Strict (Map)
 import Data.Set (Set)
 import qualified Data.Map.Strict as Map
