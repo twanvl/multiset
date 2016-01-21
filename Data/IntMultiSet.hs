@@ -561,16 +561,20 @@ toAscOccurList = Map.toAscList . unMS
 
 
 -- | /O(n*min(n,W))/. Create a multiset from a list of element\/occurence pairs.
+-- Occurences must be positive.
+-- /The precondition (all occurences > 0) is not checked./
 fromOccurList :: [(Int,Int)] -> IntMultiSet 
 fromOccurList = MS . Map.fromListWith (+)
 
 -- | /O(n)/. Build a multiset from an ascending list of element\/occurence pairs in linear time.
--- /The precondition (input list is ascending) is not checked./
+-- Occurences must be positive.
+-- /The precondition (input list is ascending, all occurences > 0) is not checked./
 fromAscOccurList :: [(Int,Int)] -> IntMultiSet 
 fromAscOccurList = MS . Map.fromAscListWith (+)
 
 -- | /O(n)/. Build a multiset from an ascending list of elements\/occurence pairs where each elements appears only once.
--- /The precondition (input list is strictly ascending) is not checked./
+-- Occurences must be positive.
+-- /The precondition (input list is strictly ascending, all occurences > 0) is not checked./
 fromDistinctAscOccurList :: [(Int,Int)] -> IntMultiSet 
 fromDistinctAscOccurList = MS . Map.fromDistinctAscList
 
@@ -587,8 +591,8 @@ fromMap :: IntMap Int -> IntMultiSet
 fromMap = MS . Map.filter (>0)
 
 -- | /O(1)/. Convert an 'IntMap' from elements to occurrences to a multiset.
--- Assumes that the 'IntMap' contains only values larger than one.
--- /The precondition (all elements > 1) is not checked./
+-- Assumes that the 'IntMap' contains only values larger than zero.
+-- /The precondition (all elements > 0) is not checked./
 fromOccurMap :: IntMap Int -> IntMultiSet
 fromOccurMap = MS
 
