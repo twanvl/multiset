@@ -174,6 +174,7 @@ m1 \\ m2 = difference m1 m2
 newtype IntMultiSet = MS { unMS :: IntMap Occur }
                      -- invariant: all values in the map are >= 1
 
+-- | Key type for IntMultiSet
 type Key = Int
 
 -- | The number of occurences of an element
