@@ -1,4 +1,7 @@
 {-# LANGUAGE CPP #-}
+#if __GLASGOW_HASKELL__ < 710
+{-# OPTIONS_GHC -fno-warn-amp #-}
+#endif
 #if __GLASGOW_HASKELL__
 {-# LANGUAGE DeriveDataTypeable, StandaloneDeriving #-}
 #endif
@@ -416,13 +419,13 @@ intersection (MS m1) (MS m2) = MS $ Map.intersectionWith min m1 m2
   Filter and partition
 --------------------------------------------------------------------}
 -- | /O(n)/. Filter all elements that satisfy the predicate.
-filter :: Ord a => (a -> Bool) -> MultiSet a -> MultiSet a
+filter :: (a -> Bool) -> MultiSet a -> MultiSet a
 filter p = MS . Map.filterWithKey (\k _ -> p k) . unMS
 
 -- | /O(n)/. Partition the multiset into two multisets, one with all elements that satisfy
 -- the predicate and one with all elements that don't satisfy the predicate.
 -- See also 'split'.
-partition :: Ord a => (a -> Bool) -> MultiSet a -> (MultiSet a,MultiSet a)
+partition :: (a -> Bool) -> MultiSet a -> (MultiSet a,MultiSet a)
 partition p = (\(x,y) -> (MS x, MS y)) . Map.partitionWithKey (\k _ -> p k) . unMS
 
 {----------------------------------------------------------------------
@@ -581,7 +584,7 @@ toMap :: MultiSet a -> Map a Occur
 toMap = unMS
 
 -- | /O(n)/. Convert a 'Map' from elements to occurrences to a multiset.
-fromMap :: Ord a => Map a Occur -> MultiSet a
+fromMap :: Map a Occur -> MultiSet a
 fromMap = MS . Map.filter (>0)
 
 -- | /O(1)/. Convert a 'Map' from elements to occurrences to a multiset.
