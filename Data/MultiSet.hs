@@ -666,8 +666,10 @@ instance (Read a, Ord a) => Read (MultiSet a) where
   Typeable/Data
 --------------------------------------------------------------------}
 
+#if __GLASGOW_HASKELL__ < 800
 #include "Typeable.h"
 INSTANCE_TYPEABLE1(MultiSet,multiSetTc,"MultiSet")
+#endif
 
 {--------------------------------------------------------------------
   Split

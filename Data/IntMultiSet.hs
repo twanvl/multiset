@@ -672,8 +672,10 @@ instance Read IntMultiSet where
   Typeable/Data
 --------------------------------------------------------------------}
 
+#if __GLASGOW_HASKELL__ < 800
 #include "Typeable.h"
 INSTANCE_TYPEABLE0(IntMultiSet,intMultiSetTc,"IntMultiSet")
+#endif
 
 {--------------------------------------------------------------------
   Split
