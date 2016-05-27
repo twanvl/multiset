@@ -15,7 +15,7 @@
 --
 -- A multiset is like a set, but it can contain multiple copies of the same element.
 -- Unless otherwise specified all insert and remove opertions affect only a single copy of an element.
--- For example the minimal element before and after @deleteMin@ could be the same, only with one less occurence.
+-- For example the minimal element before and after @deleteMin@ could be the same, only with one less occurrence.
 --
 -- Since many function names (but not the type name) clash with
 -- "Prelude" names, this module is usually imported @qualified@, e.g.
@@ -179,7 +179,7 @@ m1 \\ m2 = difference m1 m2
 newtype MultiSet a = MS { unMS :: Map a Occur }
                      -- invariant: all values in the map are >= 1
 
--- | The number of occurences of an element
+-- | The number of occurrences of an element
 type Occur = Int
 
 instance Ord a => Monoid (MultiSet a) where
@@ -232,7 +232,7 @@ member x = Map.member x . unMS
 notMember :: Ord a => a -> MultiSet a -> Bool
 notMember x = not . member x
 
--- | /O(log n)/. The number of occurences of an element in a multiset.
+-- | /O(log n)/. The number of occurrences of an element in a multiset.
 occur :: Ord a => a -> MultiSet a -> Occur
 occur x = Map.findWithDefault 0 x . unMS
 
@@ -258,7 +258,7 @@ insert x = MS . Map.insertWith (+) x 1 . unMS
 
 -- | /O(log n)/. Insert an element in a multiset a given number of times.
 --
--- Negative numbers remove occurences of the given element.
+-- Negative numbers remove occurrences of the given element.
 insertMany :: Ord a => a -> Occur -> MultiSet a -> MultiSet a
 insertMany x n
  | n <  0    = MS . Map.update (deleteN (negate n)) x . unMS
@@ -271,11 +271,11 @@ delete x = MS . Map.update (deleteN 1) x . unMS
 
 -- | /O(log n)/. Delete an element from a multiset a given number of times.
 --
--- Negative numbers add occurences of the given element.
+-- Negative numbers add occurrences of the given element.
 deleteMany :: Ord a => a -> Occur -> MultiSet a -> MultiSet a
 deleteMany x n = insertMany x (negate n)
 
--- | /O(log n)/. Delete all occurences of an element from a multiset.
+-- | /O(log n)/. Delete all occurrences of an element from a multiset.
 deleteAll :: Ord a => a -> MultiSet a -> MultiSet a
 deleteAll x = MS . Map.delete x . unMS
 
@@ -318,11 +318,11 @@ deleteMin = MS . Map.updateMin (deleteN 1) . unMS
 deleteMax :: MultiSet a -> MultiSet a
 deleteMax = MS . Map.updateMax (deleteN 1) . unMS
 
--- | /O(log n)/. Delete all occurences of the minimal element.
+-- | /O(log n)/. Delete all occurrences of the minimal element.
 deleteMinAll :: MultiSet a -> MultiSet a
 deleteMinAll = MS . Map.deleteMin . unMS
 
--- | /O(log n)/. Delete all occurences of the maximal element.
+-- | /O(log n)/. Delete all occurrences of the maximal element.
 deleteMaxAll :: MultiSet a -> MultiSet a
 deleteMaxAll = MS . Map.deleteMax . unMS
 
@@ -377,7 +377,7 @@ unions :: Ord a => [MultiSet a] -> MultiSet a
 unions ts
   = foldlStrict union empty ts
 
--- | /O(n+m)/. The union of two multisets. The union adds the occurences together.
+-- | /O(n+m)/. The union of two multisets. The union adds the occurrences together.
 -- 
 -- The implementation uses the efficient /hedge-union/ algorithm.
 -- Hedge-union is more efficient on (bigset `union` smallset).
@@ -385,8 +385,8 @@ union :: Ord a => MultiSet a -> MultiSet a -> MultiSet a
 union (MS m1) (MS m2) = MS $ Map.unionWith (+) m1 m2
 
 -- | /O(n+m)/. The union of two multisets.
--- The number of occurences of each element in the union is
--- the maximum of the number of occurences in the arguments (instead of the sum).
+-- The number of occurrences of each element in the union is
+-- the maximum of the number of occurrences in the arguments (instead of the sum).
 --
 -- The implementation uses the efficient /hedge-union/ algorithm.
 -- Hedge-union is more efficient on (bigset `union` smallset).
@@ -499,7 +499,7 @@ foldr f z = Map.foldrWithKey repF z . unMS
  where repF a 1 b = f a b
        repF a n b = repF a (n - 1) (f a b)
 
--- | /O(n)/. Fold over the elements of a multiset with their occurences.
+-- | /O(n)/. Fold over the elements of a multiset with their occurrences.
 foldOccur :: (a -> Occur -> b -> b) -> b -> MultiSet a -> b
 foldOccur f z = Map.foldrWithKey f z . unMS
 
@@ -542,33 +542,33 @@ fromDistinctAscList :: [a] -> MultiSet a
 fromDistinctAscList xs = fromDistinctAscOccurList $ zip xs (repeat 1)
 
 {--------------------------------------------------------------------
-  Occurence lists 
+  Occurrence lists 
 --------------------------------------------------------------------}
 
--- | /O(n)/. Convert the multiset to a list of element\/occurence pairs.
+-- | /O(n)/. Convert the multiset to a list of element\/occurrence pairs.
 toOccurList :: MultiSet a -> [(a,Occur)]
 toOccurList = toAscOccurList
 
--- | /O(n)/. Convert the multiset to an ascending list of element\/occurence pairs.
+-- | /O(n)/. Convert the multiset to an ascending list of element\/occurrence pairs.
 toAscOccurList :: MultiSet a -> [(a,Occur)]
 toAscOccurList = Map.toAscList . unMS
 
 
--- | /O(n*log n)/. Create a multiset from a list of element\/occurence pairs.
--- Occurences must be positive.
--- /The precondition (all occurences > 0) is not checked./
+-- | /O(n*log n)/. Create a multiset from a list of element\/occurrence pairs.
+-- Occurrences must be positive.
+-- /The precondition (all occurrences > 0) is not checked./
 fromOccurList :: Ord a => [(a,Occur)] -> MultiSet a 
 fromOccurList = MS . Map.fromListWith (+)
 
--- | /O(n)/. Build a multiset from an ascending list of element\/occurence pairs in linear time.
--- Occurences must be positive.
--- /The precondition (input list is ascending, all occurences > 0) is not checked./
+-- | /O(n)/. Build a multiset from an ascending list of element\/occurrence pairs in linear time.
+-- Occurrences must be positive.
+-- /The precondition (input list is ascending, all occurrences > 0) is not checked./
 fromAscOccurList :: Eq a => [(a,Occur)] -> MultiSet a 
 fromAscOccurList = MS . Map.fromAscListWith (+)
 
--- | /O(n)/. Build a multiset from an ascending list of elements\/occurence pairs where each elements appears only once.
--- Occurences must be positive.
--- /The precondition (input list is strictly ascending, all occurences > 0) is not checked./
+-- | /O(n)/. Build a multiset from an ascending list of elements\/occurrence pairs where each elements appears only once.
+-- Occurrences must be positive.
+-- /The precondition (input list is strictly ascending, all occurrences > 0) is not checked./
 fromDistinctAscOccurList :: [(a,Occur)] -> MultiSet a 
 fromDistinctAscOccurList = MS . Map.fromDistinctAscList
 
@@ -614,7 +614,7 @@ instance Ord a => Ord (MultiSet a) where
   {-
   -- compare s1 s2 = compare (toAscList s1) (toAscList s2) 
   -- We want {x,x,y} < {x,y}
-  -- i.e. if the number of occurences differ, more occurences come first.
+  -- i.e. if the number of occurrences differ, more occurrences come first.
   -- But also, {x,x} > {x}
   -- so this does not hold at the end of the list.
   --
@@ -680,7 +680,7 @@ split :: Ord a => a -> MultiSet a -> (MultiSet a,MultiSet a)
 split a = (\(x,y) -> (MS x, MS y)) . Map.split a . unMS
 
 -- | /O(log n)/. Performs a 'split' but also returns the number of
--- occurences of the pivot element in the original set.
+-- occurrences of the pivot element in the original set.
 splitOccur :: Ord a => a -> MultiSet a -> (MultiSet a,Occur,MultiSet a)
 splitOccur a (MS t) = let (l,m,r) = Map.splitLookup a t in
      (MS l, maybe 0 id m, MS r)
