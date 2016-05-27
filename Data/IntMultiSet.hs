@@ -153,7 +153,9 @@ import List (nub,sort)
 import qualified List
 -}
 
+#if __GLASGOW_HASKELL__ < 800
 import Data.Typeable
+#endif
 #if __GLASGOW_HASKELL__
 import Text.Read
 import Data.Data (Data(..), mkNoRepType)
