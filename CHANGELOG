@@ -1,3 +1,9 @@
+0.3.3 (2016-05-30)
+ * Document precondition of occurrence > 0 on from*List functions.
+ * #18: Compatibility with GHC 8.0
+ * #13: Fix warnings about redundant imports
+ * #22: Fixed warnings about unnecessary constraints
+
 0.3.2: (2016-01-12)
  * #7: Work around doctest issue of ambiguous modules
 
