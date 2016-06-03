@@ -1,7 +1,4 @@
 {-# LANGUAGE CPP #-}
-#if __GLASGOW_HASKELL__ < 710
-{-# OPTIONS_GHC -fno-warn-amp #-}
-#endif
 #if __GLASGOW_HASKELL__
 {-# LANGUAGE DeriveDataTypeable, StandaloneDeriving #-}
 #endif
