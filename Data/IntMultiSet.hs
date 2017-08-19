@@ -21,10 +21,10 @@
 -- Since many function names (but not the type name) clash with
 -- "Prelude" names, this module is usually imported @qualified@, e.g.
 --
--- >  import Data.MultiSet (MultiSet)
--- >  import qualified Data.MultiSet as MultiSet
+-- >  import Data.IntMultiSet (IntMultiSet)
+-- >  import qualified Data.IntMultiSet as IntMultiSet
 --
--- The implementation of 'MultiSet' is based on the "Data.IntMap" module.
+-- The implementation of 'IntMultiSet' is based on the "Data.IntMap" module.
 --
 -- Many operations have a worst-case complexity of /O(min(n,W))/.
 -- This means that the operation can become linear in the number of
