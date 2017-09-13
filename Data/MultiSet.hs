@@ -14,7 +14,7 @@
 -- Stability   :  provisional
 -- Portability :  portable
 --
--- An efficient implementation of multisets, also somtimes called bags.
+-- An efficient implementation of multisets, also sometimes called bags.
 --
 -- A multiset is like a set, but it can contain multiple copies of the same element.
 -- Unless otherwise specified all insert and remove opertions affect only a single copy of an element.
