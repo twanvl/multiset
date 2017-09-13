@@ -14,7 +14,7 @@
 -- Stability   :  provisional
 -- Portability :  portable
 --
--- An efficient implementation of multisets of integers, also somtimes called bags.
+-- An efficient implementation of multisets of integers, also sometimes called bags.
 --
 -- A multiset is like a set, but it can contain multiple copies of the same element.
 --
