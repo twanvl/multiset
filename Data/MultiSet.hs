@@ -143,6 +143,10 @@ import Prelude hiding (filter,foldr,null,map,concatMap)
 #if __GLASGOW_HASKELL__ < 710
 import Data.Monoid (Monoid(..))
 #endif
+#if MIN_VERSION_base(4,11,0)
+import qualified Data.List.NonEmpty (toList)
+import Data.Semigroup (Semigroup(..), stimesIdempotentMonoid)
+#endif
 import Data.Typeable ()
 import qualified Data.Foldable as Foldable
 import Data.Map.Strict (Map)
@@ -189,6 +193,13 @@ instance Ord a => Monoid (MultiSet a) where
     mempty  = empty
     mappend = union
     mconcat = unions
+
+#if MIN_VERSION_base(4,11,0)
+instance Ord a => Semigroup (MultiSet a) where
+    (<>) = union
+    sconcat = unions . Data.List.NonEmpty.toList
+    stimes = stimesIdempotentMonoid
+#endif
 
 instance Foldable.Foldable MultiSet where
     foldr = fold
