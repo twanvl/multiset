@@ -154,6 +154,7 @@ import Data.Set (Set)
 import qualified Data.Map.Strict as Map
 import qualified Data.Set as Set
 import qualified Data.List as List
+import Control.DeepSeq (NFData(..))
 
 {-
 -- just for testing
@@ -203,6 +204,9 @@ instance Ord a => Semigroup (MultiSet a) where
 
 instance Foldable.Foldable MultiSet where
     foldr = fold
+
+instance NFData a => NFData (MultiSet a) where
+    rnf = rnf . unMS
 
 #if __GLASGOW_HASKELL__
 

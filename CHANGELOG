@@ -1,5 +1,6 @@
 0.3.4 (2018-05-28)
  * #29: Add Semigroup instances (needed for GHC 8.4)
+ * Add NfData instances
 
 0.3.3 (2016-05-30)
  * Document precondition of occurrence > 0 on from*List functions.

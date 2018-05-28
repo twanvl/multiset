@@ -149,6 +149,7 @@ import qualified Data.IntMap.Strict as Map
 import qualified Data.IntSet as Set
 import qualified Data.List as List
 import qualified Data.MultiSet as MultiSet
+import Control.DeepSeq (NFData(..))
 
 {-
 -- just for testing
@@ -198,6 +199,9 @@ instance Semigroup IntMultiSet where
     sconcat = unions . Data.List.NonEmpty.toList
     stimes = stimesIdempotentMonoid
 #endif
+
+instance NFData IntMultiSet where
+    rnf = rnf . unMS
 
 #if __GLASGOW_HASKELL__
 
