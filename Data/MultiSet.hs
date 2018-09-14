@@ -392,8 +392,8 @@ maxView x
 
 -- | The union of a list of multisets: (@'unions' == 'foldl' 'union' 'empty'@).
 unions :: Ord a => [MultiSet a] -> MultiSet a
-unions ts
-  = foldlStrict union empty ts
+unions
+  = MS . Map.unionsWith (+) . fmap unMS
 
 -- | /O(n+m)/. The union of two multisets. The union adds the occurrences together.
 -- 
@@ -704,18 +704,6 @@ split a = (\(x,y) -> (MS x, MS y)) . Map.split a . unMS
 splitOccur :: Ord a => a -> MultiSet a -> (MultiSet a,Occur,MultiSet a)
 splitOccur a (MS t) = let (l,m,r) = Map.splitLookup a t in
      (MS l, maybe 0 id m, MS r)
-
-{--------------------------------------------------------------------
-  Utilities
---------------------------------------------------------------------}
-
--- TODO : Use foldl' from base?
-foldlStrict :: (a -> t -> a) -> a -> [t] -> a
-foldlStrict f z xs
-  = case xs of
-      []     -> z
-      (x:xx) -> let z' = f z x in seq z' (foldlStrict f z' xx)
-
 
 {--------------------------------------------------------------------
   Debugging
