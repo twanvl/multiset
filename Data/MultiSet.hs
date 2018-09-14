@@ -390,11 +390,13 @@ maxView x
   Union, Difference, Intersection
 --------------------------------------------------------------------}
 
+{-# INLINE unions #-}
 -- | The union of a list of multisets: (@'unions' == 'foldl' 'union' 'empty'@).
 unions :: Ord a => [MultiSet a] -> MultiSet a
 unions
   = MS . Map.unionsWith (+) . fmap unMS
 
+{-# INLINE union #-}
 -- | /O(n+m)/. The union of two multisets. The union adds the occurrences together.
 -- 
 -- The implementation uses the efficient /hedge-union/ algorithm.
