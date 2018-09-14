@@ -198,6 +198,7 @@ instance Ord a => Monoid (MultiSet a) where
 #if MIN_VERSION_base(4,11,0)
 instance Ord a => Semigroup (MultiSet a) where
     (<>) = union
+    {-# INLINE (<>) #-}
     sconcat = unions . Data.List.NonEmpty.toList
     stimes = stimesIdempotentMonoid
 #endif
