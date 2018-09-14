@@ -198,6 +198,7 @@ instance Ord a => Monoid (MultiSet a) where
 #if MIN_VERSION_base(4,11,0)
 instance Ord a => Semigroup (MultiSet a) where
     (<>) = union
+    {-# INLINE (<>) #-}
     sconcat = unions . Data.List.NonEmpty.toList
     stimes = stimesIdempotentMonoid
 #endif
@@ -390,11 +391,13 @@ maxView x
   Union, Difference, Intersection
 --------------------------------------------------------------------}
 
+{-# INLINE unions #-}
 -- | The union of a list of multisets: (@'unions' == 'foldl' 'union' 'empty'@).
 unions :: Ord a => [MultiSet a] -> MultiSet a
-unions ts
-  = foldlStrict union empty ts
+unions
+  = MS . Map.unionsWith (+) . fmap unMS
 
+{-# INLINE union #-}
 -- | /O(n+m)/. The union of two multisets. The union adds the occurrences together.
 -- 
 -- The implementation uses the efficient /hedge-union/ algorithm.
@@ -704,18 +707,6 @@ split a = (\(x,y) -> (MS x, MS y)) . Map.split a . unMS
 splitOccur :: Ord a => a -> MultiSet a -> (MultiSet a,Occur,MultiSet a)
 splitOccur a (MS t) = let (l,m,r) = Map.splitLookup a t in
      (MS l, maybe 0 id m, MS r)
-
-{--------------------------------------------------------------------
-  Utilities
---------------------------------------------------------------------}
-
--- TODO : Use foldl' from base?
-foldlStrict :: (a -> t -> a) -> a -> [t] -> a
-foldlStrict f z xs
-  = case xs of
-      []     -> z
-      (x:xx) -> let z' = f z x in seq z' (foldlStrict f z' xx)
-
 
 {--------------------------------------------------------------------
   Debugging
