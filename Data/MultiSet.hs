@@ -151,7 +151,12 @@ import Data.Typeable ()
 import qualified Data.Foldable as Foldable
 import Data.Map.Strict (Map)
 import Data.Set (Set)
+#if __GLASGOW_HASKELL__ >= 806
+import qualified Data.Map.Strict as Map hiding (showTreeWith)
+import qualified Data.Map.Internal.Debug as Map (showTreeWith)
+#else
 import qualified Data.Map.Strict as Map
+#endif
 import qualified Data.Set as Set
 import qualified Data.List as List
 import Control.DeepSeq (NFData(..))
