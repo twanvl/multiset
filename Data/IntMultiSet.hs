@@ -145,7 +145,12 @@ import Data.Typeable ()
 import Data.IntMap.Strict (IntMap)
 import Data.IntSet (IntSet)
 import Data.MultiSet (MultiSet)
+#if MIN_VERSION_containers(0,5,11)
+import qualified Data.IntMap.Strict as Map hiding (showTreeWith)
+import qualified Data.IntMap.Internal.Debug as Map (showTreeWith)
+#else
 import qualified Data.IntMap.Strict as Map
+#endif
 import qualified Data.IntSet as Set
 import qualified Data.List as List
 import qualified Data.MultiSet as MultiSet
