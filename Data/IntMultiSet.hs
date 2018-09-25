@@ -461,8 +461,7 @@ map :: (Key->Key) -> IntMultiSet -> IntMultiSet
 -- TODO: IntMap doesn't have a mapKeys function
 map f = fromOccurList . List.map (\(x,o) -> (f x, o)) . toOccurList
 
--- | /O(n)/. The 
---
+-- | /O(n)/.
 -- @'mapMonotonic' f s == 'map' f s@, but works only when @f@ is strictly monotonic.
 -- /The precondition is not checked./
 -- Semi-formally, we have:

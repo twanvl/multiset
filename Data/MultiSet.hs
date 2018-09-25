@@ -452,8 +452,7 @@ partition p = (\(x,y) -> (MS x, MS y)) . Map.partitionWithKey (\k _ -> p k) . un
 map :: (Ord b) => (a->b) -> MultiSet a -> MultiSet b
 map f = MS . Map.mapKeysWith (+) f . unMS
 
--- | /O(n)/. The 
---
+-- | /O(n)/.
 -- @'mapMonotonic' f s == 'map' f s@, but works only when @f@ is strictly monotonic.
 -- /The precondition is not checked./
 -- Semi-formally, we have:
