@@ -139,7 +139,7 @@ import Data.Monoid (Monoid(..))
 #endif
 #if MIN_VERSION_base(4,11,0)
 import qualified Data.List.NonEmpty (toList)
-import Data.Semigroup (Semigroup(..), stimesIdempotentMonoid)
+import Data.Semigroup (Semigroup(..))
 #endif
 import Data.Typeable ()
 import Data.IntMap.Strict (IntMap)
@@ -204,7 +204,10 @@ instance Monoid IntMultiSet where
 instance Semigroup IntMultiSet where
     (<>) = union
     sconcat = unions . Data.List.NonEmpty.toList
-    stimes = stimesIdempotentMonoid
+    stimes n ms@(MS m)
+      | n <= 0    = empty
+      | n == 1    = ms
+      | otherwise = MS $ Map.map (* fromIntegral n) m
 #endif
 
 instance NFData IntMultiSet where
