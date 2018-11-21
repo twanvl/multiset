@@ -1,4 +1,5 @@
 dist
+dist-newstyle
 cabal-dev
 *.o
 *.hi
@@ -15,3 +16,4 @@ cabal.sandbox.config
 *.aux
 *.hp
 stack.yaml
+.ghc.environment*
