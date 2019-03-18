@@ -36,8 +36,7 @@ test-suite doctests
   ghc-options:        -threaded
   hs-source-dirs:     test
   main-is:            Main.hs
-  build-depends:      Glob
-                    , base >= 4 && < 5
+  build-depends:      base >= 4 && < 5
                     , doctest
   if impl(ghc < 8.0)
     buildable: False
