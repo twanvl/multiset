@@ -39,3 +39,5 @@ test-suite doctests
   build-depends:      Glob
                     , base >= 4 && < 5
                     , doctest
+  if impl(ghc < 8.0)
+    buildable: False
