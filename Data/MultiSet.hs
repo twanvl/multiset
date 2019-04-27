@@ -140,7 +140,7 @@ import Prelude hiding (filter,foldr,null,map,concatMap)
 #if __GLASGOW_HASKELL__ < 710
 import Data.Monoid (Monoid(..))
 #endif
-#if MIN_VERSION_base(4,11,0)
+#if MIN_VERSION_base(4,9,0)
 import qualified Data.List.NonEmpty (toList)
 import Data.Semigroup (Semigroup(..))
 #endif
@@ -197,7 +197,7 @@ instance Ord a => Monoid (MultiSet a) where
     mappend = union
     mconcat = unions
 
-#if MIN_VERSION_base(4,11,0)
+#if MIN_VERSION_base(4,9,0)
 instance Ord a => Semigroup (MultiSet a) where
     (<>) = union
     sconcat = unions . Data.List.NonEmpty.toList
