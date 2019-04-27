@@ -143,7 +143,10 @@ import Data.Monoid (Monoid(..))
 #endif
 #if MIN_VERSION_base(4,9,0)
 import qualified Data.List.NonEmpty (toList)
-import Data.Semigroup (Semigroup(..), stimesMonoid)
+import Data.Semigroup (Semigroup(..))
+#if !MIN_VERSION_base(4,11,0)
+import Data.Semigroup (stimesMonoid)
+#endif
 #endif
 import Data.Typeable ()
 import qualified Data.Foldable as Foldable
