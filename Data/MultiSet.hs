@@ -213,7 +213,7 @@ instance Ord a => Semigroup (MultiSet a) where
 
 -- | Note that 'elem' is slower than 'member'.
 instance Foldable.Foldable MultiSet where
-    foldr = foldr
+    foldr = Data.MultiSet.foldr
     foldl f z = Map.foldlWithKey repF z . unMS
       where repF acc x 1 = f acc x
             repF acc x n = repF (f acc x) x (n - 1)
