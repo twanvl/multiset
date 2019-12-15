@@ -228,6 +228,10 @@ instance Foldable.Foldable MultiSet where
     foldMap f = Map.foldMapWithKey (\x n -> stimesMonoid n (f x)) . unMS
 #endif
 
+#if MIN_VERSION_base(4,13,0)
+    foldMap' f = Map.foldlWithKey' (\acc x n -> acc <> stimes n (f x)) mempty . unMS
+#endif
+
 #if MIN_VERSION_base(4,6,0)
     foldr' f z = Map.foldrWithKey' repF z . unMS
       where repF x 1 !acc = f x acc
