@@ -139,6 +139,10 @@ import qualified Data.List.NonEmpty (toList)
 import Data.Semigroup (Semigroup(..))
 #endif
 import Data.Typeable ()
+import qualified Data.Foldable as Foldable
+#if !MIN_VERSION_base(4,8,0)
+import Data.Foldable (Foldable())
+#endif
 import Data.IntMap.Strict (IntMap)
 import Data.IntSet (IntSet)
 import Data.MultiSet (MultiSet)
@@ -412,9 +416,8 @@ maxView x
 --------------------------------------------------------------------}
 
 -- | The union of a list of multisets: (@'unions' == 'foldl' 'union' 'empty'@).
-unions :: [IntMultiSet] -> IntMultiSet
-unions ts
-  = foldlStrict union empty ts
+unions :: (Foldable f) => f IntMultiSet -> IntMultiSet
+unions = Foldable.foldl' union empty
 
 -- | /O(n+m)/. The union of two multisets. The union adds the occurrences together.
 --
@@ -717,18 +720,6 @@ split a = (\(x,y) -> (MS x, MS y)) . Map.split a . unMS
 splitOccur :: Int -> IntMultiSet -> (IntMultiSet,Int,IntMultiSet)
 splitOccur a (MS t) = let (l,m,r) = Map.splitLookup a t in
      (MS l, maybe 0 id m, MS r)
-
-{--------------------------------------------------------------------
-  Utilities
---------------------------------------------------------------------}
-
--- TODO : Use foldl' from base?
-foldlStrict :: (a -> t -> a) -> a -> [t] -> a
-foldlStrict f z xs
-  = case xs of
-      []     -> z
-      (x:xx) -> let z' = f z x in seq z' (foldlStrict f z' xx)
-
 
 {--------------------------------------------------------------------
   Debugging
