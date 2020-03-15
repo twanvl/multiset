@@ -624,19 +624,19 @@ toAscOccurList = Map.toAscList . unMS
 -- Occurrences must be positive.
 -- /The precondition (all occurrences > 0) is not checked./
 fromOccurList :: Ord a => [(a,Occur)] -> MultiSet a 
-fromOccurList = MS . Map.fromListWith (+)
+fromOccurList = MS . Map.filter (>0) . Map.fromListWith (+)
 
 -- | /O(n)/. Build a multiset from an ascending list of element\/occurrence pairs in linear time.
 -- Occurrences must be positive.
 -- /The precondition (input list is ascending, all occurrences > 0) is not checked./
 fromAscOccurList :: Eq a => [(a,Occur)] -> MultiSet a 
-fromAscOccurList = MS . Map.fromAscListWith (+)
+fromAscOccurList = MS . Map.filter (>0) . Map.fromAscListWith (+)
 
 -- | /O(n)/. Build a multiset from an ascending list of elements\/occurrence pairs where each elements appears only once.
 -- Occurrences must be positive.
 -- /The precondition (input list is strictly ascending, all occurrences > 0) is not checked./
 fromDistinctAscOccurList :: [(a,Occur)] -> MultiSet a 
-fromDistinctAscOccurList = MS . Map.fromDistinctAscList
+fromDistinctAscOccurList = MS . Map.filter (>0) . Map.fromDistinctAscList
 
 {--------------------------------------------------------------------
   Map
